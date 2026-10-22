@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taquería El Asada - El auténtico sabor</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#0D0D0D',
+                        brandRed: '#C8102E',
+                        brandYellow: '#F59E0B',
+                        brandCard: '#1A1A1A'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0D0D0D;
+            color: #FFFFFF;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0D0D0D;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C8102E;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-brandDark text-gray-100 min-h-screen flex flex-col justify-between selection:bg-brandRed selection:text-white pb-20 md:pb-0 relative overflow-x-hidden">
+
+    <!-- EFECTOS DE LUZ / DIFUMINADO EN EL FONDO (ROJO Y AMARILLO) -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-brandRed/20 rounded-full blur-[120px]"></div>
+        <div class="absolute top-1/3 -right-32 w-96 h-96 bg-brandYellow/15 rounded-full blur-[140px]"></div>
+        <div class="absolute -bottom-32 left-1/4 w-[500px] h-[500px] bg-brandRed/15 rounded-full blur-[160px]"></div>
+    </div>
+
+    <!-- HEADER / ENCABEZADO -->
+    <header class="sticky top-0 z-40 bg-brandDark/95 backdrop-blur-md border-b border-zinc-800/80 px-4 py-3">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            
+            <!-- LOGO / TITULO -->
+            <div class="flex items-center space-x-3">
+                <img src="logo.png" alt="Taquería El Asada" class="h-12 w-auto object-contain" onError="this.style.display='none'; document.getElementById('fallback-logo').classList.remove('hidden');">
+                
+                <!-- Fallback si logo.png no existe localmente -->
+                <div id="fallback-logo" class="hidden flex items-center space-x-2">
+                    <div class="w-10 h-10 rounded-full bg-brandRed flex items-center justify-center text-brandYellow text-xl font-black">
+                        <i class="fa-solid font-bold">🌮</i>
+                    </div>
+                </div>
+
+                <div class="flex flex-col">
+                    <img src="titulo.png" alt="TAQUERÍA EL ASADA" class="h-6 w-auto object-contain" onError="this.style.display='none'; document.getElementById('fallback-title').classList.remove('hidden');">
+                    <!-- Fallback para título -->
+                    <span id="fallback-title" class="hidden font-black text-lg leading-tight tracking-wider text-white">
+                        TAQUERÍA <span class="text-brandYellow">EL ASADA</span>
+                    </span>
+                    <span class="text-[10px] text-gray-400 font-semibold tracking-widest uppercase">El auténtico sabor</span>
+                </div>
+            </div>
+
+            <!-- BOTÓN CARRITO -->
+            <button id="cart-toggle-btn" onclick="toggleCart()" class="relative bg-zinc-900/90 border border-zinc-700/80 p-2.5 rounded-xl hover:bg-zinc-800 transition-all active:scale-95 flex items-center justify-center shadow-lg">
+                <i class="fa-solid fa-shopping-bag text-brandYellow text-xl"></i>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-brandRed text-white font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center border-2 border-brandDark hidden">
+                    0
+                </span>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto w-full px-4 pt-4 space-y-6 relative z-10">
+
+        <!-- BANNER PROMOCIONAL -->
+        <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brandRed via-red-950 to-black p-4 border border-brandRed/40 shadow-xl">
+            <div class="flex items-center space-x-4 relative z-10">
+                <div class="bg-brandYellow text-brandDark p-3 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
+                    <i class="fa-solid fa-bottle-water text-3xl"></i>
+                </div>
+                <div class="flex-1">
+                    <span class="inline-block bg-brandYellow/20 text-brandYellow text-[10px] font-black uppercase px-2 py-0.5 rounded mb-1 border border-brandYellow/30">
+                        Promoción
+                    </span>
+                    <h2 class="text-sm md:text-base font-bold text-white leading-tight">
+                        ¡MEDIO LITRO DE AGUA GRATIS!
+                    </h2>
+                    <p class="text-xs text-red-200 mt-1">
+                        En la compra de 5 tacos por plato. <span class="text-gray-300 font-medium">(Hasta agotar existencia de agua)</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN PRINCIPAL (HERO) -->
+        <section class="relative rounded-2xl overflow-hidden bg-brandCard/90 border border-zinc-800/80 shadow-2xl backdrop-blur-sm">
+            <div class="relative h-60 md:h-72 w-full overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?q=80&w=1000&auto=format&fit=crop" 
+                     alt="Tacos de la Taquería El Asada" 
+                     class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-brandCard via-brandCard/40 to-transparent"></div>
+            </div>
+
+            <div class="p-5 relative -mt-16 z-10">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <h1 class="text-2xl md:text-3xl font-black tracking-tight text-white">
+                        El auténtico sabor
+                    </h1>
+                    <span class="inline-flex items-center gap-1.5 text-xs bg-emerald-950/80 text-emerald-400 border border-emerald-800/50 px-2.5 py-1 rounded-full font-semibold shadow-md">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Abierto hoy 6:00 pm - 11:30 pm
+                    </span>
+                </div>
+
+                <p class="text-xs text-gray-400 mb-4">
+                    Servidos con cebolla, cilantro y limón recién cortado. Disfruta de la mejor calidad.
+                </p>
+
+                <div class="flex flex-wrap gap-3 text-xs text-gray-300">
+                    <div class="flex items-center gap-1.5 bg-zinc-900/90 px-3 py-1.5 rounded-lg border border-zinc-800 shadow-inner">
+                        <i class="fa-regular fa-clock text-brandYellow"></i>
+                        <span>6:00 pm - 11:30 pm (Descanso: Martes)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN MENÚ UNIFICADO -->
+        <section class="space-y-4">
+            <div class="flex items-center justify-between border-b border-zinc-800/80 pb-3">
+                <h2 class="text-xl font-black tracking-wide text-white flex items-center gap-2">
+                    <span class="w-2 h-6 bg-brandRed rounded-full"></span>
+                    Menú
+                </h2>
+                <span class="text-xs text-gray-400 font-medium">Selecciona tus productos</span>
+            </div>
+
+            <!-- TODO JUNTO EN UNA SOLA LISTA -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="menu-container">
+                <!-- Se llena dinámicamente con JS -->
+            </div>
+        </section>
+
+        <!-- SECCIÓN UBICACIÓN Y MAPA -->
+        <section class="bg-brandCard/90 border border-zinc-800/80 backdrop-blur-sm rounded-2xl p-5 space-y-4 shadow-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-location-dot text-brandRed"></i>
+                        Ubicación
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-0.5">Visítanos y vive la experiencia en persona</p>
+                </div>
+            </div>
+
+            <!-- Iframe de Google Maps -->
+            <div class="w-full h-52 rounded-xl overflow-hidden border border-zinc-800 relative bg-zinc-900">
+                <iframe 
+                    title="Ubicación Taquería El Asada"
+                    src="https://maps.google.com/maps?q=20.767760194615512,-103.43861612338958&z=17&output=embed"
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+
+            <!-- Botones de Navegación -->
+            <div class="grid grid-cols-2 gap-3">
+                <a href="https://www.google.com/maps/search/?api=1&query=20.767760194615512,-103.43861612338958" 
+                   target="_blank" 
+                   class="flex items-center justify-center gap-2 bg-zinc-900 border border-zinc-700/80 hover:border-brandYellow text-white text-xs font-bold py-2.5 px-3 rounded-xl transition shadow-md">
+                    <i class="fa-brands fa-google text-brandYellow"></i>
+                    Google Maps
+                </a>
+                <a href="https://waze.com/ul?ll=20.767760194615512,-103.43861612338958&navigate=yes" 
+                   target="_blank" 
+                   class="flex items-center justify-center gap-2 bg-zinc-900 border border-zinc-700/80 hover:border-sky-400 text-white text-xs font-bold py-2.5 px-3 rounded-xl transition shadow-md">
+                    <i class="fa-brands fa-waze text-sky-400"></i>
+                    Waze
+                </a>
+            </div>
+        </section>
+
+        <!-- REDES SOCIALES -->
+        <section class="text-center py-4 space-y-3">
+            <p class="text-xs text-gray-400 font-medium">Síguenos en nuestras redes sociales</p>
+            <div class="flex justify-center items-center gap-4">
+                <a href="#" target="_blank" class="w-10 h-10 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-center text-gray-300 hover:text-brandYellow hover:border-brandYellow transition">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+                <a href="#" target="_blank" class="w-10 h-10 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-center text-gray-300 hover:text-brandRed hover:border-brandRed transition">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="#" target="_blank" class="w-10 h-10 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-center text-gray-300 hover:text-white hover:border-white transition">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+            </div>
+            <p class="text-[11px] text-gray-500">Tacos EL ASADA</p>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-zinc-900 bg-brandDark py-6 text-center text-xs text-gray-500 relative z-10">
+        <p>© 2026 Taquería El Asada. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- BOTÓN FLOTANTE PERMANENTE DE WHATSAPP -->
+    <a href="https://wa.me/523334470355?text=¡Hola!%20Me%20gustaría%20hacer%20una%20consulta." 
+       target="_blank"
+       aria-label="Contactar por WhatsApp" 
+       class="fixed bottom-5 right-5 z-40 bg-emerald-600 hover:bg-emerald-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-transform active:scale-90 border-2 border-emerald-400/30">
+        <i class="fa-brands fa-whatsapp text-3xl"></i>
+    </a>
+
+    <!-- OVERLAY CARRITO MODAL -->
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+    <!-- PANEL CARRITO LATERAL -->
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-brandDark border-l border-zinc-800 z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between shadow-2xl">
+        
+        <!-- HEADER CARRITO -->
+        <div class="p-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-950">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping text-brandYellow"></i>
+                <h3 class="font-bold text-base text-white">Tu Pedido</h3>
+            </div>
+            <button onclick="toggleCart()" class="text-gray-400 hover:text-white p-2 text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- CONTENIDO CARRITO -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4">
+            
+            <!-- LISTA DE PRODUCTOS -->
+            <div id="cart-items-container" class="space-y-3">
+                <!-- Se llena dinámicamente con JS -->
+            </div>
+
+            <!-- BARRA INTERACTIVA Y ELECCIÓN DE AGUA GRATIS -->
+            <div id="promo-bar-container" class="bg-zinc-900 border border-zinc-800 rounded-xl p-3.5 space-y-2.5">
+                <div class="flex items-center justify-between text-xs">
+                    <span class="font-bold text-gray-300 flex items-center gap-1.5">
+                        <i class="fa-solid fa-bottle-water text-brandYellow"></i>
+                        Agua Gratis (Promoción)
+                    </span>
+                    <span id="promo-progress-text" class="text-brandYellow font-bold">0 / 5 Tacos</span>
+                </div>
+
+                <!-- BARRA DE PROGRESO -->
+                <div class="w-full bg-zinc-800 h-2.5 rounded-full overflow-hidden border border-zinc-700">
+                    <div id="promo-progress-fill" class="bg-gradient-to-r from-brandRed to-brandYellow h-full w-0 transition-all duration-300"></div>
+                </div>
+
+                <!-- SELECCIÓN Y RECLAMO DE AGUA CUANDO SE LOGRAN 5 TACOS -->
+                <div id="water-claim-section" class="hidden pt-1 border-t border-zinc-800 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-emerald-400">¡Ganaste agua gratis!</p>
+                        <p id="water-count-text" class="text-[10px] text-gray-400">1 botella de medio litro disponible</p>
+                    </div>
+                    <button id="claim-water-btn" onclick="toggleClaimWater()" 
+                            class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white shadow-md">
+                        <i class="fa-solid fa-check"></i>
+                        <span id="claim-btn-label">Incluir Agua</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- FORMULARIO DE PEDIDO -->
+            <div id="order-form" class="space-y-3 pt-2 border-t border-zinc-800 hidden">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400">Datos para la entrega</h4>
+                
+                <div>
+                    <label for="user-name" class="block text-xs text-gray-300 mb-1">Nombre Completo *</label>
+                    <input type="text" id="user-name" placeholder="Ej. Juan Pérez" 
+                           class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brandYellow">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-300 mb-1">Tipo de Entrega *</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="flex items-center justify-center gap-2 p-2.5 rounded-xl border border-zinc-700 bg-zinc-900 cursor-pointer has-[:checked]:border-brandRed has-[:checked]:bg-brandRed/10 text-xs">
+                            <input type="radio" name="delivery-type" value="🛵 Entrega a domicilio" checked class="hidden">
+                            <span>🛵 Domicilio</span>
+                        </label>
+                        <label class="flex items-center justify-center gap-2 p-2.5 rounded-xl border border-zinc-700 bg-zinc-900 cursor-pointer has-[:checked]:border-brandRed has-[:checked]:bg-brandRed/10 text-xs">
+                            <input type="radio" name="delivery-type" value="🚶 Pasar a recoger" class="hidden">
+                            <span>🚶 Recoger</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="order-notes" class="block text-xs text-gray-300 mb-1">Notas adicionales (Opcional)</label>
+                    <textarea id="order-notes" rows="2" placeholder="Ej. Sin cebolla, extra salsa..." 
+                              class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brandYellow resize-none"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER CARRITO / ACCIÓN -->
+        <div class="p-4 border-t border-zinc-800 bg-zinc-950 space-y-3">
+            <button id="send-whatsapp-btn" onclick="sendOrderWhatsApp()" disabled
+                    class="w-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition active:scale-98 shadow-lg">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span>Enviar Comanda por WhatsApp</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- JAVASCRIPT DE LA APLICACIÓN -->
+    <script>
+        // Catálogo de Productos Unificado
+        const products = [
+            { id: 'tripa', name: 'Taco de Tripa', isTaco: true },
+            { id: 'asada', name: 'Taco de Asada', isTaco: true },
+            { id: 'chorizo', name: 'Taco de Chorizo', isTaco: true },
+            { id: 'pastor', name: 'Taco de Pastor', isTaco: true },
+            { id: 'campechano', name: 'Taco Campechano', isTaco: true },
+            { id: 'carnaza', name: 'Taco de Carnaza', isTaco: true },
+            { id: 'cabeza', name: 'Taco de Cabeza', isTaco: true },
+            { id: 'labio', name: 'Taco de Labio', isTaco: true },
+            { id: 'arrachera', name: 'Taco de Arrachera', isTaco: true },
+            { id: 'lengua', name: 'Taco de Lengua', isTaco: true },
+            { id: 'gringa', name: 'Gringa', isTaco: false },
+            { id: 'quesadilla', name: 'Quesadilla', isTaco: false }
+        ];
+
+        // Estado del Carrito
+        let cart = {};
+        let waterClaimed = true; // Por defecto seleccionado si califica
+
+        // Inicializar Menú Unificado en el DOM
+        function renderMenu() {
+            const menuContainer = document.getElementById('menu-container');
+            menuContainer.innerHTML = '';
+
+            products.forEach(p => {
+                const count = cart[p.id] || 0;
+                menuContainer.innerHTML += `
+                    <div class="bg-brandCard/90 border border-zinc-800/80 rounded-xl p-3 flex items-center justify-between hover:border-zinc-700 transition backdrop-blur-sm shadow-md">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-sm text-white">${p.name}</span>
+                        </div>
+                        <div class="flex items-center space-x-2 bg-zinc-900 border border-zinc-800 rounded-lg p-1">
+                            <button onclick="updateQty('${p.id}', -1)" class="w-7 h-7 rounded-md bg-zinc-800 hover:bg-zinc-700 text-white font-bold flex items-center justify-center active:scale-95 transition">
+                                -
+                            </button>
+                            <span id="qty-${p.id}" class="w-6 text-center font-bold text-sm text-brandYellow">
+                                ${count}
+                            </span>
+                            <button onclick="updateQty('${p.id}', 1)" class="w-7 h-7 rounded-md bg-brandRed hover:bg-red-700 text-white font-bold flex items-center justify-center active:scale-95 transition">
+                                +
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Actualizar Cantidad de un Producto
+        function updateQty(id, delta) {
+            const current = cart[id] || 0;
+            const newQty = Math.max(0, current + delta);
+            
+            if (newQty === 0) {
+                delete cart[id];
+            } else {
+                cart[id] = newQty;
+            }
+
+            // Actualizar contador del menú
+            const qtyElement = document.getElementById(`qty-${id}`);
+            if (qtyElement) qtyElement.innerText = newQty;
+
+            updateCartUI();
+        }
+
+        // Alternar Elección del Agua Gratis
+        function toggleClaimWater() {
+            waterClaimed = !waterClaimed;
+            updateCartUI();
+        }
+
+        // Obtener Total de Tacos
+        function getTotalTacos() {
+            let total = 0;
+            for (const id in cart) {
+                const product = products.find(p => p.id === id);
+                if (product && product.isTaco) {
+                    total += cart[id];
+                }
+            }
+            return total;
+        }
+
+        // Actualizar UI del Carrito y Barra de Promoción
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cart-items-container');
+            const cartCountBadge = document.getElementById('cart-count');
+            const orderForm = document.getElementById('order-form');
+            const sendBtn = document.getElementById('send-whatsapp-btn');
+
+            let totalItems = 0;
+            cartItemsContainer.innerHTML = '';
+
+            for (const id in cart) {
+                const qty = cart[id];
+                totalItems += qty;
+                const product = products.find(p => p.id === id);
+
+                if (product && qty > 0) {
+                    cartItemsContainer.innerHTML += `
+                        <div class="flex items-center justify-between bg-zinc-900 p-3 rounded-xl border border-zinc-800">
+                            <div>
+                                <h4 class="font-bold text-sm text-white">${product.name}</h4>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="updateQty('${product.id}', -1)" class="w-6 h-6 bg-zinc-800 text-white rounded font-bold text-xs flex items-center justify-center">-</button>
+                                <span class="text-sm font-bold text-brandYellow w-5 text-center">${qty}</span>
+                                <button onclick="updateQty('${product.id}', 1)" class="w-6 h-6 bg-brandRed text-white rounded font-bold text-xs flex items-center justify-center">+</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            // Barra de Promoción de Agua
+            const totalTacos = getTotalTacos();
+            const freeWatersAvailable = Math.floor(totalTacos / 5);
+            const progressFill = document.getElementById('promo-progress-fill');
+            const progressText = document.getElementById('promo-progress-text');
+            const waterClaimSection = document.getElementById('water-claim-section');
+            const waterCountText = document.getElementById('water-count-text');
+            const claimBtn = document.getElementById('claim-water-btn');
+
+            if (freeWatersAvailable > 0) {
+                progressFill.style.width = '100%';
+                progressText.innerText = `¡Promoción Alcanzada! (${totalTacos} tacos)`;
+                waterClaimSection.classList.remove('hidden');
+                waterCountText.innerText = `${freeWatersAvailable} botella(s) de 1/2 litro gratis`;
+
+                if (waterClaimed) {
+                    claimBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-emerald-600 text-white shadow-md";
+                    claimBtn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Incluida</span>`;
+                } else {
+                    claimBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-zinc-800 text-gray-400 hover:text-white border border-zinc-700";
+                    claimBtn.innerHTML = `<i class="fa-solid fa-plus"></i> <span>Agregar Agua</span>`;
+                }
+            } else {
+                const remainder = totalTacos % 5;
+                const percentage = (remainder / 5) * 100;
+                progressFill.style.width = `${percentage}%`;
+                progressText.innerText = `${remainder} / 5 Tacos`;
+                waterClaimSection.classList.add('hidden');
+            }
+
+            // Estado general del carrito
+            if (totalItems > 0) {
+                cartCountBadge.innerText = totalItems;
+                cartCountBadge.classList.remove('hidden');
+                orderForm.classList.remove('hidden');
+                sendBtn.disabled = false;
+            } else {
+                cartCountBadge.classList.add('hidden');
+                orderForm.classList.add('hidden');
+                sendBtn.disabled = true;
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-10 text-gray-500 space-y-2">
+                        <i class="fa-solid fa-basket-shopping text-3xl opacity-30"></i>
+                        <p class="text-xs">Tu carrito está vacío</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Toggle Abrir/Cerrar Carrito
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-overlay');
+            
+            const isOpen = !drawer.classList.contains('translate-x-full');
+
+            if (isOpen) {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        // Enviar pedido a WhatsApp
+        function sendOrderWhatsApp() {
+            const nameInput = document.getElementById('user-name').value.trim();
+            const deliveryType = document.querySelector('input[name="delivery-type"]:checked').value;
+            const notes = document.getElementById('order-notes').value.trim();
+
+            if (!nameInput) {
+                alert('Por favor ingresa tu nombre para continuar.');
+                document.getElementById('user-name').focus();
+                return;
+            }
+
+            let orderText = `*NUEVA COMANDA - TAQUERÍA EL ASADA*\n`;
+            orderText += `-----------------------------------\n`;
+            orderText += `👤 *Cliente:* ${nameInput}\n`;
+            orderText += `📍 *Modalidad:* ${deliveryType}\n`;
+            orderText += `-----------------------------------\n`;
+            orderText += `*DETALLE DEL PEDIDO:*\n`;
+
+            for (const id in cart) {
+                const qty = cart[id];
+                const product = products.find(p => p.id === id);
+                if (product && qty > 0) {
+                    orderText += `• ${qty}x ${product.name}\n`;
+                }
+            }
+
+            const totalTacos = getTotalTacos();
+            const freeWatersAvailable = Math.floor(totalTacos / 5);
+
+            if (freeWatersAvailable > 0 && waterClaimed) {
+                orderText += `-----------------------------------\n`;
+                orderText += `🎁 *PROMOCIÓN INCLUIDA:*\n`;
+                orderText += `• ${freeWatersAvailable}x Agua de Medio Litro GRATIS\n`;
+            }
+
+            if (notes) {
+                orderText += `-----------------------------------\n`;
+                orderText += `📝 *Notas:* ${notes}\n`;
+            }
+
+            orderText += `-----------------------------------\n`;
+            orderText += `¡Gracias por su preferencia!`;
+
+            const phone = "523334470355";
+            const encodedUrl = `https://wa.me/${phone}?text=${encodeURIComponent(orderText)}`;
+            window.open(encodedUrl, '_blank');
+        }
+
+        // Inicialización al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMenu();
+            updateCartUI();
+        });
+    </script>
+</body>
+</html>
